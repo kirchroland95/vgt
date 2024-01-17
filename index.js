@@ -34,11 +34,22 @@ let loggeduser="";
 // toggle for login and signup screen
 let signupon=false;
 const saltRounds = 10;
+let gamelist=[]
 
 // render homepage
 app.get("/", async (req, res) => {
+  let loggeduserID;
+  if(loggeduser==""){
+    loggeduserID=1
+  }else{
+    const getuserID=(await db.query("SELECT * FROM usercredentials WHERE username = $1;",[loggeduser])).rows
+    loggeduserID = getuserID[0].id
+  }
+  
+  gamelist = (await db.query("SELECT * FROM gamedata WHERE user_uid = $1;",[loggeduserID])).rows
    res.render("index.ejs",{
-    loggeduser: loggeduser
+    loggeduser: loggeduser,
+    gamelist: gamelist
    })
   });
 
@@ -74,11 +85,14 @@ app.post("/login", async (req, res) => {
   const get_user = (await db.query("SELECT * FROM usercredentials WHERE username = $1;",[username])).rows
   // if a user exists with that name, check the password
   if(get_user.length>0){
-      bcrypt.compare(password, get_user[0].password, function(err, result) {
+      bcrypt.compare(password, get_user[0].password, async function(err, result) {
         if(result){
           loggeduser=get_user[0].username;
+          gamelist = (await db.query("SELECT * FROM gamedata WHERE user_uid = $1;",[get_user[0].id])).rows
+
           res.render("index.ejs",{
-            loggeduser: loggeduser
+            loggeduser: loggeduser,
+            gamelist: gamelist
            })
         }else{
           console.log("wrong password");

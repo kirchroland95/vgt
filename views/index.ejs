@@ -1,3 +1,50 @@
 <%- include("partials/header.ejs") %>
 <h1>Hello</h1>
+
+<div class="containerr">
+  <% gamelist.forEach(review => {%>
+  <form action="/edit" method="post">
+    <div class="gamepage-grid">
+      <div class="gamepage-grid-left">
+        <div class="card">
+          <div class="wrapper">
+            <img
+              style="height: 300px"
+              src="https://i.pinimg.com/originals/8e/a9/11/8ea91102b3736aaa756817c71144ed72.jpg"
+              class="cover-image"
+            />
+          </div>
+          <img
+            src="https://assets.stickpng.com/images/584df3ad6a5ae41a83ddee08.png"
+            class="character"
+          />
+        </div>
+      </div>
+      <div class="gamepage-grid-right">
+        <div class="game1">
+          <div class="ps-lg-3">
+            <h2 class="title text-dark"><%= review.name %></h2>
+            <p>Platform: <%= review.platform %></p>
+            <div class="mb-3">
+              <span>Rating: <%= review.rating %></span>
+              <span class="text-muted">/10</span>
+            </div>
+            <p><%= review.review %></p>
+            <button
+              name="id"
+              value="<%= review.id %>"
+              class="btn btn-primary shadow-0"
+              type="submit"
+            >
+              Edit
+            </button>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <%}); %>
+</div>
+
 <%- include("partials/footer.ejs") %>
