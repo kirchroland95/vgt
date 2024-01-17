@@ -196,6 +196,8 @@
     padding: 0 0px;
     perspective: 2500px;
     margin: 0 50px;
+    border-width: 0px;
+    background-color: #f5f5f5;
   }
   
   .cover-image {
