@@ -1,8 +1,8 @@
 <%- include("partials/header.ejs") %>
 <div class="login-body">
   <div class="login">
-    <h1>Login</h1>
-    <form action="/login" method="POST">
+    <h1><%= signupon? "Signup" : "Login" %></h1>
+    <form action=<%= signupon? "/signup" : "/login" %> method="POST">
       <div class="username">
         <div class="sec-2">
           <ion-icon name="mail-outline"></ion-icon>
@@ -17,9 +17,24 @@
           placeholder="Password"
         />
       </div>
-      <button class="loginButton">Login</button>
+      <% if(signupon){ %>
+
+      <div class="password">
+        <input
+          class="pas"
+          type="password"
+          name="confirmpassword"
+          placeholder="Confirm password"
+        />
+      </div>
+
+      <%} %>
+      <button class="loginButton"><%= signupon? "Signup" : "Login" %></button>
     </form>
-    <div class="signup"><span>Signup</span><span>Forgot Password?</span></div>
+    <div class="signup">
+      <span><a href="/signup">Signup</a></span
+      ><span>Forgot Password?</span>
+    </div>
   </div>
 </div>
 
