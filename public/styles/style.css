@@ -51,6 +51,32 @@
   footer p {
     color: #ccc;
   }
+
+  body{
+    background-color: #f5f5f5; /* Add your desired background color */
+  }
+
+  .login-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5; /* Add your desired background color */
+  }
+
+  .login {
+    text-align: center;
+    background-color: white; /* Add your desired background color */
+    border: 2px solid #f5ba13; /* Add your desired border color */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow for a slight pop-out effect */
+  }
+
+
+
+
   
   /* Roboto font classes */
   .roboto-thin {
@@ -124,3 +150,5 @@
     font-weight: 900;
     font-style: italic;
   }
+
+  

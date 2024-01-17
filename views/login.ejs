@@ -1,3 +1,26 @@
 <%- include("partials/header.ejs") %>
-<h1>login</h1>
+<div class="login-body">
+  <div class="login">
+    <h1>Login</h1>
+    <form action="/login" method="POST">
+      <div class="username">
+        <div class="sec-2">
+          <ion-icon name="mail-outline"></ion-icon>
+          <input type="text" name="username" placeholder="Username" />
+        </div>
+      </div>
+      <div class="password">
+        <input
+          class="pas"
+          type="password"
+          name="password"
+          placeholder="Password"
+        />
+      </div>
+      <button class="loginButton">Login</button>
+    </form>
+    <div class="signup"><span>Signup</span><span>Forgot Password?</span></div>
+  </div>
+</div>
+
 <%- include("partials/footer.ejs") %>
