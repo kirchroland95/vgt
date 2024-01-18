@@ -4,7 +4,7 @@
   <div class="text-center mt-5">
     <h1>Add New Game</h1>
   </div>
-  <form autocomplete="off" action="/new" method="post">
+  <form autocomplete="off" action="/editsave" method="post">
     <div class="row">
       <div class="col-lg-7 mx-auto">
         <div class="add-card mt-2 mx-auto p-4">
@@ -20,6 +20,7 @@
                           id="form_name"
                           type="text"
                           name="name"
+                          value="<%= item.name %>"
                           class="form-control"
                           required="required"
                           data-error="Please add the name of the game."
@@ -33,6 +34,7 @@
                           id="form_lastname"
                           type="text"
                           name="platform"
+                          value="<%= item.platform %>"
                           class="form-control"
                           required="required"
                           data-error="Please specify the platform."
@@ -48,6 +50,7 @@
                           id="form_email"
                           type="text"
                           name="achievements"
+                          value="<%= item.achievement %>"
                           class="form-control"
                           required="required"
                           data-error="Please add your achievement count."
@@ -64,16 +67,16 @@
                           required="required"
                           data-error="Please rate the game."
                         >
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
+                          <option <%= item.rating==1? "selected" : null %> value="1">1</option>
+                          <option <%= item.rating==2? "selected" : null %> value="2">2</option>
+                          <option <%= item.rating==3? "selected" : null %> value="3">3</option>
+                          <option <%= item.rating==4? "selected" : null %> value="4">4</option>
+                          <option <%= item.rating==5? "selected" : null %> value="5">5</option>
+                          <option <%= item.rating==6? "selected" : null %> value="6">6</option>
+                          <option <%= item.rating==7? "selected" : null %> value="7">7</option>
+                          <option <%= item.rating==8? "selected" : null %> value="8">8</option>
+                          <option <%= item.rating==9? "selected" : null %> value="9">9</option>
+                          <option <%= item.rating==10? "selected" : null %> value="10">10</option>
                         </select>
                       </div>
                     </div>
@@ -86,6 +89,7 @@
                           id="form_name"
                           type="text"
                           name="imgurl"
+                          value="<%= item.imgurl %>"
                           class="form-control"
                           required="required"
                           data-error="Please add an image."
@@ -99,6 +103,7 @@
                           id="form_lastname"
                           type="text"
                           name="imgpopurl"
+                          value="<%= item.imgpopurl %>"
                           class="form-control"
                           required="required"
                           data-error="Please add an image."
@@ -117,16 +122,18 @@
                           rows="12"
                           required="required"
                           data-error="Please, leave a review."
-                        ></textarea>
+                        ><%= item.review %></textarea>
                       </div>
                     </div>
-
+                    <input type="hidden" id="itemid" name="id" value=<%= item.id %>>
+                    <input type="hidden" id="userid" name="user_uid" value=<%= item.user_uid %>>
                     <div class="col-md-12">
-                      <input
+                      <button
                         type="submit"
+                        name="submit"
                         class="btn btn-success btn-send pt-2 mt-2 btn-block"
-                        value="Add Game"
-                      />
+                        value="Save"
+                      >Save</button>
                     </div>
                   </div>
                 </div>

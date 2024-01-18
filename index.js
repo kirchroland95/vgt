@@ -168,6 +168,44 @@ try {
     })
    });
 
+  app.post("/edit", async (req, res) => {
+    const itemid=req.body.id;
+    const get_item = (await db.query("SELECT * FROM gamedata WHERE id = $1;",[itemid])).rows
+    const item_data ={
+      id: itemid,
+      name: get_item[0].name,
+      platform: get_item[0].platform,
+      achievement: get_item[0].achievement, 
+      review: get_item[0].review, 
+      rating: get_item[0].rating, 
+      imgurl: get_item[0].imgurl, 
+      imgpopurl: get_item[0].imgpopurl, 
+      user_uid: get_item[0].user_uid
+    }
+    res.render("edit.ejs",{
+      loggeduser: loggeduser,
+      item: item_data
+     })
+  });
+
+
+  app.post("/editsave", async (req, res) => {
+    const {name, platform, achievements, rating, imgurl, imgpopurl, review, id, user_uid}=req.body;
+try {
+  const result= await db.query("UPDATE gamedata SET name = $1, platform = $2, achievement = $3, review = $4, rating = $5, imgurl = $6, imgpopurl =$7 WHERE id = $8",
+  [name, platform, achievements, review, rating, imgurl, imgpopurl, id]);
+  gamelist = (await db.query("SELECT * FROM gamedata WHERE user_uid = $1;",[user_uid])).rows
+} catch (error) {
+  console.log(error);;
+}
+    res.render("index.ejs",{
+     loggeduser: loggeduser,
+     gamelist: gamelist
+    })
+   });
+
+
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
