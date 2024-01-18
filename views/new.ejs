@@ -1,3 +1,144 @@
 <%- include("partials/header.ejs") %>
-<h1>add new entry</h1>
+
+<div class="container">
+  <div class="text-center mt-5">
+    <h1>Add New Game</h1>
+  </div>
+  <form action="/new" method="post">
+    <div class="row">
+      <div class="col-lg-7 mx-auto">
+        <div class="add-card mt-2 mx-auto p-4">
+          <div class="card-body">
+            <div class="container">
+              <form id="contact-form" role="form">
+                <div class="controls">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_name">Game Name</label>
+                        <input
+                          id="form_name"
+                          type="text"
+                          name="name"
+                          class="form-control"
+                          required="required"
+                          data-error="Please add the name of the game."
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_lastname">Platform</label>
+                        <input
+                          id="form_lastname"
+                          type="text"
+                          name="platform"
+                          class="form-control"
+                          required="required"
+                          data-error="Please specify the platform."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_email">Achievements</label>
+                        <input
+                          id="form_email"
+                          type="text"
+                          name="achievements"
+                          class="form-control"
+                          required="required"
+                          data-error="Please add your achievement count."
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_need">Rating</label>
+                        <select
+                          id="form_need"
+                          name="rating"
+                          class="form-control"
+                          required="required"
+                          data-error="Please rate the game."
+                        >
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_name">Image URL</label>
+                        <input
+                          id="form_name"
+                          type="text"
+                          name="imgurl"
+                          class="form-control"
+                          required="required"
+                          data-error="Please add an image."
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="form_lastname">Image Popup URL</label>
+                        <input
+                          id="form_lastname"
+                          type="text"
+                          name="imgpopurl"
+                          class="form-control"
+                          required="required"
+                          data-error="Please add an image."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="form_message">Review</label>
+                        <textarea
+                          id="form_message"
+                          name="review"
+                          class="form-control"
+                          rows="12"
+                          required="required"
+                          data-error="Please, leave a review."
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <input
+                        type="submit"
+                        class="btn btn-success btn-send pt-2 mt-2 btn-block"
+                        value="Add Game"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.8 -->
+      </div>
+      <!-- /.row-->
+    </div>
+  </form>
+</div>
+
 <%- include("partials/footer.ejs") %>

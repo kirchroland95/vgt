@@ -1,5 +1,26 @@
 <%- include("partials/header.ejs") %>
-<h1>Hello</h1>
+<% if(loggeduser){%>
+  <h1 class="add-icon">
+    <a href="/new">
+   
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="70px"
+        height="70px"
+        fill="currentColor"
+        class="bi bi-plus-circle-fill"
+        viewBox="0 0 16 16"
+        color="#00ADB5"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"
+        />
+      </svg>
+
+
+</a>
+  </h1>
+  <%}%>
 
 <div class="containerr">
   <% gamelist.forEach(review => {%>
@@ -10,12 +31,12 @@
           <div class="wrapper">
             <img
               style="height: 300px"
-              src="https://i.pinimg.com/originals/8e/a9/11/8ea91102b3736aaa756817c71144ed72.jpg"
+              src= <%= review.imgurl %>
               class="cover-image"
             />
           </div>
           <img
-            src="https://assets.stickpng.com/images/584df3ad6a5ae41a83ddee08.png"
+            src= <%= review.imgpopurl %>
             class="character"
           />
         </div>
