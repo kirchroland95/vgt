@@ -1,3 +1,75 @@
 <%- include("partials/header.ejs") %>
-<h1>Hello</h1>
+<% if(loggeduser!=""){%>
+  <h1 class="add-icon">
+    <a href="/new">
+   
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="70px"
+        height="70px"
+        fill="currentColor"
+        class="bi bi-plus-circle-fill"
+        viewBox="0 0 16 16"
+        color="#04AA6D"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"
+        />
+      </svg>
+
+
+</a>
+  </h1>
+  <%}%>
+
+
+  <% gamelist.forEach(review => {%>
+    <div class="containerr">
+  <form action="/edit" method="post">
+    <div class="gamepage-grid">
+      <div class="gamepage-grid-left">
+        <div class="card">
+          <div class="wrapper">
+            <img
+              style="height: 300px"
+              src= <%= review.imgurl %>
+              class="cover-image"
+            />
+          </div>
+          <img
+            src= <%= review.imgpopurl %>
+            class="character"
+          />
+        </div>
+      </div>
+      <div class="gamepage-grid-right">
+        <div class="game1">
+          <div class="ps-lg-3">
+            <h2 class="title text-dark"><%= review.name %></h2>
+            <p>Platform: <%= review.platform %></p>
+            <p>Achievements: <%= review.achievement %></p>
+            <div class="mb-3">
+              <span>Rating: <%= review.rating %></span>
+            </div>
+            <p><%= review.review %></p>
+            <% if(loggeduser!=""){ %>
+            <button
+              name="id"
+              value="<%= review.id %>"
+              class="btn btn-primary shadow-0"
+              type="submit"
+            >
+              Edit
+            </button>
+            <%}%>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+  <%}); %>
+
+
 <%- include("partials/footer.ejs") %>

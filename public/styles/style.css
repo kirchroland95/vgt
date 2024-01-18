@@ -3,15 +3,44 @@
     display: flex;  /* flex alignment */
     align-items: center;
     justify-content: space-between;
-    background-color: #f5ba13;
-    margin: auto -16px;
-    padding: 4px 32px;
+    background-color: #222831;
+    margin: auto 0px;
+    padding: 12px 32px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   }
   
   header h1 {
-    color: #fff;
+    color: #EEEEEE;
   }
+
+  h1{
+    color: #222831;
+  }
+
+  .add-icon {
+    text-align: right;
+    padding-right: 20px; /* Adjust this value to set the distance from the right side */
+    padding-top: 10px;
+  }
+
+  .add-card{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .btn-send {
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    width: 100%;
+    margin-left: 3px;
+    padding-top: 20px;
+    }
+  .help-block.with-errors {
+    color: #ff5050;
+    margin-top: 5px;
+
+}
 
   header a {
     text-decoration: none; /* Removes underline styling from link */
@@ -68,7 +97,7 @@
   .login {
     text-align: center;
     background-color: white; /* Add your desired background color */
-    border: 2px solid #f5ba13; /* Add your desired border color */
+    border: 2px solid #222831; /* Add your desired border color */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow for a slight pop-out effect */
@@ -151,4 +180,132 @@
     font-style: italic;
   }
 
+  .gamepage-grid{
+    display: grid;
+    margin-bottom: 4rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .gamepage-grid-left{
+    grid-column: 3 / 4;
+  }
+
+  .gamepage-grid-right{
+    position: relative;
+    overflow: hidden;
+    grid-column: 5 / 10;
+    margin-left: 3.2rem;
+  }
+
+  /* Cool card effect */
+
+  :root {
+    --card-height: 300px;
+    --card-width: calc(var(--card-height) / 1.5);
+  }
+  * {
+    box-sizing: border-box;
+  }
+  /* body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #191c29;
+  } */
+  .card {
+    width: var(--card-width);
+    height: var(--card-height);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 0px;
+    perspective: 2500px;
+    margin: 0 50px;
+    border-width: 0px;
+    background-color: #f5f5f5;
+  }
   
+  .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .wrapper {
+    transition: all 0.5s;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+  }
+  
+  .card:hover .wrapper {
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+    box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  }
+  
+  .wrapper::before,
+  .wrapper::after {
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+  }
+  .wrapper::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(
+      to top,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
+  .wrapper::after {
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 46%,
+      rgba(12, 13, 19, 0.5) 68%,
+      rgba(12, 13, 19) 97%
+    );
+  }
+  
+  .card:hover .wrapper::before,
+  .wrapper::after {
+    opacity: 1;
+  }
+  
+  .card:hover .wrapper::after {
+    height: 120px;
+  }
+  .title {
+    width: 100%;
+    transition: transform 0.5s;
+  }
+  .card:hover .title {
+    transform: translate3d(0%, -50px, 100px);
+  }
+  
+  .character {
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  .card:hover .character {
+    opacity: 1;
+    transform: translate3d(0%, -30%, 100px);
+  }
+/* Cool card effect end*/  
