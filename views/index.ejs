@@ -1,5 +1,5 @@
 <%- include("partials/header.ejs") %>
-<% if(loggeduser){%>
+<% if(loggeduser!=""){%>
   <h1 class="add-icon">
     <a href="/new">
    
@@ -22,8 +22,9 @@
   </h1>
   <%}%>
 
-<div class="containerr">
+
   <% gamelist.forEach(review => {%>
+    <div class="containerr">
   <form action="/edit" method="post">
     <div class="gamepage-grid">
       <div class="gamepage-grid-left">
@@ -51,6 +52,7 @@
               <span>Rating: <%= review.rating %></span>
             </div>
             <p><%= review.review %></p>
+            <% if(loggeduser!=""){ %>
             <button
               name="id"
               value="<%= review.id %>"
@@ -59,13 +61,15 @@
             >
               Edit
             </button>
+            <%}%>
             <hr />
           </div>
         </div>
       </div>
     </div>
   </form>
-  <%}); %>
 </div>
+  <%}); %>
+
 
 <%- include("partials/footer.ejs") %>
