@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="text-center mt-5">
-    <h1>Add New Game</h1>
+    <h1>Edit Review</h1>
   </div>
   <form autocomplete="off" action="/editsave" method="post">
     <div class="row">
@@ -112,6 +112,18 @@
                     </div>
                   </div>
                   <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group text-center my-3 ">
+                        <img src="<%= item.imgurl %>" height="300px"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group text-center my-3 ">
+                        <img src="<%= item.imgpopurl %>" height="300px"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label for="form_message">Review</label>
@@ -129,9 +141,10 @@
                     <input type="hidden" id="userid" name="user_uid" value=<%= item.user_uid %>>
                     <div class="col-md-12">
                       <button
+                      style="background:#393E46; color:#EEEEEE"
                         type="submit"
                         name="submit"
-                        class="btn btn-success btn-send pt-2 mt-2 btn-block"
+                        class="btn btn-send pt-2 mt-2 btn-block roboto-bold"
                         value="Save"
                       >Save</button>
                     </div>
