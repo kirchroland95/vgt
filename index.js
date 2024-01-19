@@ -94,6 +94,58 @@ app.get("/new", async (req, res) => {
   });
 });
 
+// order by newest 
+app.get("/ordernew", async (req, res) => {
+  if (loggeduser != "") {
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id DESC;",[loggeduser])).rows
+  }else{
+    gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY id DESC;")).rows
+  }
+  res.render("index.ejs", {
+    loggeduser: loggeduser,
+    gamelist: gamelist,
+  });
+});
+
+// order by oldest 
+app.get("/orderold", async (req, res) => {
+  if (loggeduser != "") {
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id ASC;",[loggeduser])).rows
+  }else{
+    gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY id ASC;")).rows
+  }
+  res.render("index.ejs", {
+    loggeduser: loggeduser,
+    gamelist: gamelist,
+  });
+});
+
+// order by highest rated 
+app.get("/orderbest", async (req, res) => {
+  if (loggeduser != "") {
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating DESC;",[loggeduser])).rows
+  }else{
+    gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY rating DESC;")).rows
+  }
+  res.render("index.ejs", {
+    loggeduser: loggeduser,
+    gamelist: gamelist,
+  });
+});
+
+// order by lowest rated 
+app.get("/orderworst", async (req, res) => {
+  if (loggeduser != "") {
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating ASC;",[loggeduser])).rows
+  }else{
+    gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY rating ASC;")).rows
+  }
+  res.render("index.ejs", {
+    loggeduser: loggeduser,
+    gamelist: gamelist,
+  });
+});
+
 app.post("/login", async (req, res) => {
   // get user and password from form and get password from database
   const { username, password } = req.body;
