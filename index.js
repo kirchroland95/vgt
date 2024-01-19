@@ -146,6 +146,20 @@ app.get("/orderworst", async (req, res) => {
   });
 });
 
+// search for an entry
+app.post("/search", async (req, res) => {
+  const {search} = req.body;
+  if (loggeduser != "") {
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 AND LOWER(gd.name) LIKE LOWER($2) ORDER BY gd.id DESC;",[loggeduser,"%"+search+"%"])).rows
+  }else{
+    gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 AND LOWER(name) LIKE LOWER($1) ORDER BY rating DESC;",["%"+search+"%"])).rows
+  }
+  res.render("index.ejs", {
+    loggeduser: loggeduser,
+    gamelist: gamelist,
+  });
+});
+
 app.post("/login", async (req, res) => {
   // get user and password from form and get password from database
   const { username, password } = req.body;
