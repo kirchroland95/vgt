@@ -1,27 +1,37 @@
 <%- include("partials/header.ejs") %>
-<% if(loggeduser!=""){%>
-  <h1 class="add-icon">
-    <a href="/new">
-   
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="70px"
-        height="70px"
-        fill="currentColor"
-        class="bi bi-plus-circle-fill"
-        viewBox="0 0 16 16"
-        color="#04AA6D"
-      >
-        <path
-          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"
-        />
-      </svg>
 
-
-</a>
-  </h1>
-  <%}%>
-
+    <div class="d-flex justify-content-center py-3">
+      <ul  class="nav align-items-center nav-pills">
+        <li class="nav-item"><a href="#" style="color:#212529;" class="nav-link">Sort by newest</a></li>
+        <li class="nav-item"><a href="#" style="color:#212529;" class="nav-link">Sort by oldest</a></li>
+        <li>
+            <% if(loggeduser!=""){%>
+                <h1 class="add-icon">
+                  <a href="/new">
+                 
+                      <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="70px"
+                      height="70px"
+                      fill="currentColor"
+                      class="bi bi-plus-circle-fill"
+                      viewBox="0 0 16 16"
+                      color="#00ADB5"
+                    >
+                      <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"
+                      />
+                    </svg>
+              
+              
+              </a>
+                </h1>
+                <%}%>
+        </li>
+        <li class="nav-item"><a href="#" style="color:#212529;" class="nav-link">Sort by highest rated</a></li>
+        <li class="nav-item"><a href="#" style="color:#212529;" class="nav-link">Sort by lowest rated</a></li>
+      </ul>
+    </div>
 
   <% gamelist.forEach(review => {%>
     <div class="containerr">
