@@ -18,9 +18,12 @@
             <input name="password" type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
           </div>
+          <% if(wrongCredentials){ %>
+            <label style="color: red">Wrong credentials!</label>
+            <%} %>
           <% if(signupon){ %>
           <div class="form-floating mb-3">
-            <input name="confirmpassword" type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
+            <input name="confirmpassword" type="password" class="form-control rounded-3" id="floatingConfirmPassword" placeholder="Password">
             <label for="floatingPassword">Confirm password</label>
           </div>
           <%} %>

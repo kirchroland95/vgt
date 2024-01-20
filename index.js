@@ -35,6 +35,7 @@ let loggeduser = "";
 let signupon = false;
 const saltRounds = 10;
 let gamelist = [];
+let wrongCredentials = false;
 
 // render homepage
 app.get("/", async (req, res) => {
@@ -63,6 +64,7 @@ app.get("/", async (req, res) => {
 
 // render login page
 app.get("/login", async (req, res) => {
+  wrongCredentials=false;
   // if user clicked on logout button, check if the user was logged in
   if (loggeduser != "") {
     // if he was, log him out and set user back to default
@@ -73,16 +75,19 @@ app.get("/login", async (req, res) => {
   res.render("login.ejs", {
     loggeduser: loggeduser,
     signupon: signupon,
+    wrongCredentials: wrongCredentials
   });
 });
 
 app.get("/signup", async (req, res) => {
+  wrongCredentials=false;
   // set signup flag to true, showing that signup form should be active
   signupon = true;
   // render login page again, with this flag active
   res.render("login.ejs", {
     loggeduser: loggeduser,
     signupon: signupon,
+    wrongCredentials: wrongCredentials
   });
 });
 
@@ -188,11 +193,23 @@ app.post("/login", async (req, res) => {
           });
         } else {
           console.log("wrong password");
+          wrongCredentials=true;
+          res.render("login.ejs", {
+            loggeduser: loggeduser,
+            signupon: signupon,
+            wrongCredentials: wrongCredentials
+          });
         }
       }
     );
   } else {
     console.log("user does not exist");
+    wrongCredentials=true;
+    res.render("login.ejs", {
+      loggeduser: loggeduser,
+      signupon: signupon,
+      wrongCredentials: wrongCredentials
+    });
   }
 });
 
@@ -205,6 +222,7 @@ app.post("/signup", async (req, res) => {
     res.render("login.ejs", {
       loggeduser: loggeduser,
       signupon: signupon,
+      wrongCredentials: wrongCredentials
     });
   } else {
     // if passwords are the same, check if user exists in the database
@@ -219,6 +237,7 @@ app.post("/signup", async (req, res) => {
       res.render("login.ejs", {
         loggeduser: loggeduser,
         signupon: signupon,
+        wrongCredentials: wrongCredentials
       });
     } else {
       // encrypt password with bcrypt
