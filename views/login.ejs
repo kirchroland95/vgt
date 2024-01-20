@@ -10,6 +10,9 @@
 
       <div class="modal-body p-5 pt-0">
         <form action=<%= signupon? "/signup" : "/login" %> method="POST" class="">
+          <% if((wrongCredentials=="userexist")&&(signupon==true)){ %>
+            <label style="color: red">User already exists!</label>
+            <%} %>
           <div class="form-floating mb-3">
             <input name="username" type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
@@ -18,9 +21,13 @@
             <input name="password" type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
           </div>
-          <% if(wrongCredentials){ %>
+          <% if((wrongCredentials=="wrongpass")&&(signupon==false)){ %>
             <label style="color: red">Wrong credentials!</label>
-            <%} %>
+          <%} %>
+          <% if((wrongCredentials=="missmatchpass")&&(signupon==true)){ %>
+            <label style="color: red">Password doesn't match!</label>
+          <%} %>
+
           <% if(signupon){ %>
           <div class="form-floating mb-3">
             <input name="confirmpassword" type="password" class="form-control rounded-3" id="floatingConfirmPassword" placeholder="Password">

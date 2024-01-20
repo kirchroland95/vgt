@@ -35,7 +35,7 @@ let loggeduser = "";
 let signupon = false;
 const saltRounds = 10;
 let gamelist = [];
-let wrongCredentials = false;
+let wrongCredentials = "no error";
 
 // render homepage
 app.get("/", async (req, res) => {
@@ -64,7 +64,7 @@ app.get("/", async (req, res) => {
 
 // render login page
 app.get("/login", async (req, res) => {
-  wrongCredentials=false;
+  wrongCredentials="no error";
   // if user clicked on logout button, check if the user was logged in
   if (loggeduser != "") {
     // if he was, log him out and set user back to default
@@ -80,7 +80,7 @@ app.get("/login", async (req, res) => {
 });
 
 app.get("/signup", async (req, res) => {
-  wrongCredentials=false;
+  wrongCredentials="no error";
   // set signup flag to true, showing that signup form should be active
   signupon = true;
   // render login page again, with this flag active
@@ -193,7 +193,7 @@ app.post("/login", async (req, res) => {
           });
         } else {
           console.log("wrong password");
-          wrongCredentials=true;
+          wrongCredentials="wrongpass";
           res.render("login.ejs", {
             loggeduser: loggeduser,
             signupon: signupon,
@@ -204,7 +204,7 @@ app.post("/login", async (req, res) => {
     );
   } else {
     console.log("user does not exist");
-    wrongCredentials=true;
+    wrongCredentials="wrongpass";
     res.render("login.ejs", {
       loggeduser: loggeduser,
       signupon: signupon,
@@ -218,6 +218,7 @@ app.post("/signup", async (req, res) => {
   // check if the 2 passwords match
   if (password != confirmpassword) {
     console.log("Passwords don't match!");
+    wrongCredentials="missmatchpass";
     // if they don't, render signup screen again
     res.render("login.ejs", {
       loggeduser: loggeduser,
@@ -233,6 +234,7 @@ app.post("/signup", async (req, res) => {
     ).rows;
     if (get_user.length > 0) {
       console.log("User already exists!");
+      wrongCredentials="userexist";
       // if they do, render signup screen again
       res.render("login.ejs", {
         loggeduser: loggeduser,
