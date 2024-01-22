@@ -91,7 +91,6 @@
                           name="imgurl"
                           value="<%= item.imgurl %>"
                           class="form-control"
-                          required="required"
                           data-error="Please add an image."
                         />
                       </div>
@@ -105,7 +104,6 @@
                           name="imgpopurl"
                           value="<%= item.imgpopurl %>"
                           class="form-control"
-                          required="required"
                           data-error="Please add an image."
                         />
                       </div>
@@ -114,12 +112,16 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group text-center my-3 ">
+                        <% if(item.imgurl!="") {%>
                         <img src="<%= item.imgurl %>" height="300px"/>
+                        <% } %>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group text-center my-3 ">
+                        <% if(item.imgpopurl!="") {%>
                         <img src="<%= item.imgpopurl %>" height="300px"/>
+                        <% } %>
                       </div>
                     </div>
                   </div>

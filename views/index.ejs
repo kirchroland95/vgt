@@ -42,15 +42,18 @@
           <div class="wrapper">
             <img
               style="height: 300px"
-              src= <%= review.imgurl %>
+              src= <%= (review.imgurl==""?"../assets/default_url.jpg":review.imgurl) %>
               class="cover-image"
             />
           </div>
-          <img
-          
+          <% if(review.imgpopurl=="") {%>
+            <h2 style="display:grid; text-align: center; color:#EEEEEE" class="character">NO IMAGE</h2>
+          <% }else{ %>
+            <img
             src= <%= review.imgpopurl %>
             class="character"
-          />
+            />
+          <% } %>
         </div>
       </div>
       <div class="gamepage-grid-right">
