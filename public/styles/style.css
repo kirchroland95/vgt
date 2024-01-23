@@ -194,6 +194,9 @@ body {
     margin-left: 0;
     margin-right: 0;
   }
+  header {
+    flex-direction: column;
+  }
 }
 
 /* Cool card effect */
@@ -205,15 +208,7 @@ body {
 * {
   box-sizing: border-box;
 }
-/* body {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #191c29;
-  } */
+
 .card {
   width: var(--card-width);
   height: var(--card-height);
