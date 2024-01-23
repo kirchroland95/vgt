@@ -186,10 +186,13 @@ body {
   .gamepage-grid-right {
     /* Reset grid-column and margin for stacking elements */
     text-align: center;
+    align-items: center;
     justify-content: center;
+    justify-items: center;
     display: grid;
-    grid-column: 2 / 10;
+    grid-column: 2 / 12;
     margin-left: 0;
+    margin-right: 0;
   }
 }
 
