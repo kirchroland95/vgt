@@ -1,86 +1,78 @@
 <%- include("partials/header.ejs") %>
 
     <div class="d-flex justify-content-center py-3">
-      <ul  class="nav align-items-center nav-pills">
-        <li class="nav-item"><a href="/ordernew" style="color:#212529;" class="nav-link">Order by newest</a></li>
-        <li class="nav-item"><a href="/orderold" style="color:#212529;" class="nav-link">Order by oldest</a></li>
-        <li>
-            <% if(loggeduser!=""){%>
-                <h1 class="add-icon">
-                  <a href="/new">
-                 
-                      <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="70px"
-                      height="70px"
-                      fill="currentColor"
-                      class="bi bi-plus-circle-fill"
-                      viewBox="0 0 16 16"
-                      color="#00ADB5"
-                    >
-                      <path
-                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"
-                      />
-                    </svg>
-              
-              
-              </a>
-                </h1>
-                <%}%>
-        </li>
-        <li class="nav-item"><a href="/orderbest" style="color:#212529;" class="nav-link">Order by highest rated</a></li>
-        <li class="nav-item"><a href="/orderworst" style="color:#212529;" class="nav-link">Order by lowest rated</a></li>
-      </ul>
+        <ul class="nav align-items-center nav-pills">
+            <li class="nav-item"><a href="/ordernew" style="color:#212529;" class="nav-link">Order by newest</a></li>
+            <li class="nav-item"><a href="/orderold" style="color:#212529;" class="nav-link">Order by oldest</a></li>
+            <li>
+                <% if(loggeduser!="" ){%>
+                    <h1 class="add-icon">
+                        <a href="/new">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="70px" height="70px" fill="currentColor"
+                                class="bi bi-plus-circle-fill" viewBox="0 0 16 16" color="#00ADB5">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                            </svg>
+                        </a>
+                    </h1>
+                <% } %>
+            </li>
+            <li class="nav-item"><a href="/orderbest" style="color:#212529;" class="nav-link">Order by highest rated</a>
+            </li>
+            <li class="nav-item"><a href="/orderworst" style="color:#212529;" class="nav-link">Order by lowest rated</a>
+            </li>
+        </ul>
     </div>
 
   <% gamelist.forEach(review => {%>
     <div class="containerr">
-  <form action="/edit" method="post">
-    <div class="gamepage-grid">
-      <div class="gamepage-grid-left">
-        <div class="card">
-          <div class="wrapper">
-            <img
-              style="height: 300px"
-              src= <%= review.imgurl %>
-              class="cover-image"
-            />
-          </div>
-          <img
-          
-            src= <%= review.imgpopurl %>
-            class="character"
-          />
-        </div>
-      </div>
-      <div class="gamepage-grid-right">
-        <div class="game1">
-          <div class="ps-lg-3">
-            <h2 class="title text-dark"><%= review.name %></h2>
-            <p>Platform: <%= review.platform %></p>
-            <p>Achievements: <%= review.achievement %></p>
-            <div class="mb-3">
-              <span>Rating: <%= review.rating %></span>
+        <form action="/edit" method="post">
+            <div class="gamepage-grid align-items-center">
+                <div class="gamepage-grid-left">
+                    <div class="card">
+                        <div class="wrapper">
+                            <img style="height: 300px" src=<%=(review.imgurl=="" ?"../assets/default_url.jpg":review.imgurl) %>
+                            class="cover-image"
+                            />
+                        </div>
+                        <% if(review.imgpopurl=="" ) {%>
+                            <h2 style="display:grid; text-align: center; color:#EEEEEE; text-shadow: 2px 2px 8px #000000;" class="character">NO IMAGE PROVIDED</h2>
+                        <% }else{ %>
+                            <img src=<%=review.imgpopurl %>
+                            class="character"
+                            />
+                        <% } %>
+                    </div>
+                </div>
+                <div class="gamepage-grid-right">
+                    <div class="game1">
+                        <div class="ps-lg-3">
+                            <h2 class="title text-dark">
+                                <%= review.name %>
+                            </h2>
+                            <p>Platform: <%= review.platform %>
+                            </p>
+                            <p>Achievements: <%= review.achievement %>
+                            </p>
+                            <div class="mb-3">
+                                <span>Rating: <%= review.rating %></span>
+                            </div>
+                            <p style="text-align: justify;">
+                                <%= review.review %>
+                            </p>
+                            <% if(loggeduser!="" ){ %>
+                                <button name="id" value="<%= review.id %>" style="background:#393E46; color:#EEEEEE"
+                                    class="btn roboto-medium shadow-0" type="submit">
+                                    Edit
+                                </button>
+                            <% } %>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p><%= review.review %></p>
-            <% if(loggeduser!=""){ %>
-            <button
-              name="id"
-              value="<%= review.id %>"
-              style="background:#393E46; color:#EEEEEE"
-              class="btn roboto-medium shadow-0"
-              type="submit"
-            >
-              Edit
-            </button>
-            <%}%>
-            <hr />
-          </div>
-        </div>
-      </div>
+        </form>
     </div>
-  </form>
-</div>
   <%}); %>
 
 

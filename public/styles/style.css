@@ -180,6 +180,19 @@ body {
   margin-left: 3.2rem;
 }
 
+/* Media query for smaller screens */
+@media screen and (max-width: 1200px) {
+  .gamepage-grid-left,
+  .gamepage-grid-right {
+    /* Reset grid-column and margin for stacking elements */
+    text-align: center;
+    justify-content: center;
+    display: grid;
+    grid-column: 2 / 10;
+    margin-left: 0;
+  }
+}
+
 /* Cool card effect */
 
 :root {

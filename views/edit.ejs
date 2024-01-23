@@ -23,6 +23,7 @@
                           value="<%= item.name %>"
                           class="form-control"
                           required="required"
+                          maxlength="255"
                           data-error="Please add the name of the game."
                         />
                       </div>
@@ -37,6 +38,7 @@
                           value="<%= item.platform %>"
                           class="form-control"
                           required="required"
+                          maxlength="50"
                           data-error="Please specify the platform."
                         />
                       </div>
@@ -53,6 +55,7 @@
                           value="<%= item.achievement %>"
                           class="form-control"
                           required="required"
+                          maxlength="10"
                           data-error="Please add your achievement count."
                         />
                       </div>
@@ -91,8 +94,8 @@
                           name="imgurl"
                           value="<%= item.imgurl %>"
                           class="form-control"
-                          required="required"
                           data-error="Please add an image."
+                          maxlength="255"
                         />
                       </div>
                     </div>
@@ -105,8 +108,8 @@
                           name="imgpopurl"
                           value="<%= item.imgpopurl %>"
                           class="form-control"
-                          required="required"
                           data-error="Please add an image."
+                          maxlength="255"
                         />
                       </div>
                     </div>
@@ -114,12 +117,16 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group text-center my-3 ">
+                        <% if(item.imgurl!="") {%>
                         <img src="<%= item.imgurl %>" height="300px"/>
+                        <% } %>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group text-center my-3 ">
+                        <% if(item.imgpopurl!="") {%>
                         <img src="<%= item.imgpopurl %>" height="300px"/>
+                        <% } %>
                       </div>
                     </div>
                   </div>
@@ -134,6 +141,7 @@
                           rows="12"
                           required="required"
                           data-error="Please, leave a review."
+                          maxlength="1000"
                         ><%= item.review %></textarea>
                       </div>
                     </div>
@@ -141,7 +149,7 @@
                     <input type="hidden" id="userid" name="user_uid" value=<%= item.user_uid %>>
                     <div class="col-md-12">
                       <button
-                      style="background:#393E46; color:#EEEEEE"
+                        style="background:#393E46; color:#EEEEEE"
                         type="submit"
                         name="submit"
                         class="btn btn-send pt-2 mt-2 btn-block roboto-bold"

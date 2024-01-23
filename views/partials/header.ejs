@@ -23,15 +23,15 @@
       <div>
         <a href="/"><h1 class="roboto-regular">GameTracker</h1></a>
         <form action="/search" method="post">
-          <input id="search" name ="search" class="roboto-regular" />
+          <input id="search" name ="search" autocomplete="off" class="roboto-regular" />
           <button style="color:#222831" class="btn btn-light roboto-bold">Search</button>
         </form>
       </div>
       <a href="/login"
         ><h1 class="roboto-regular">
           <%= loggeduser==""? "Login" : "Logout" %>
-        </h1></a
-      >
+        </h1>
+      </a>
     </header>
   </body>
 </html>
