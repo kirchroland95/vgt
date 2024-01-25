@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
-
+import session from 'express-session';
 // start express app
 const app = express();
 // declare port to use by express
@@ -27,10 +27,13 @@ app.use(bodyParser.json());
 
 // use public folder for static path
 app.use(express.static("public"));
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Replace with a strong secret key
+  resave: false,
+  saveUninitialized: true,
+}));
 app.set("view engine", "ejs");
 
-// keep track of the user after login
-let loggeduser = "";
 // toggle for login and signup screen
 let signupon = false;
 const saltRounds = 10;
@@ -41,6 +44,8 @@ let wrongCredentials = "no error";
 
 // render homepage
 app.get("/", async (req, res) => {
+  // Retrieve user from the session
+  const loggeduser = req.session.loggeduser || "";
   let loggeduserID;
   if (loggeduser == "") {
     loggeduserID = 1; // use this user as a default
@@ -71,9 +76,11 @@ app.get("/", async (req, res) => {
 // render login page
 app.get("/login", async (req, res) => {
   wrongCredentials="no error";
+  let loggeduser = req.session.loggeduser || "";
   // if user clicked on logout button, check if the user was logged in
   if (loggeduser != "") {
     // if he was, log him out and set user back to default
+    req.session.loggeduser = "";
     loggeduser = "";
   }
   // signup screen should be disabled on first visit on the login page
@@ -88,6 +95,7 @@ app.get("/login", async (req, res) => {
 
 // switch to sign up screen
 app.get("/signup", async (req, res) => {
+  const loggeduser = req.session.loggeduser || "";
   wrongCredentials="no error";
   // set sign up flag to true, showing that sign up form should be active
   signupon = true;
@@ -101,6 +109,7 @@ app.get("/signup", async (req, res) => {
 
 // render new item page
 app.get("/new", async (req, res) => {
+  const loggeduser = req.session.loggeduser;
   res.render("new.ejs", {
     loggeduser: loggeduser,
     gamelist: gamelist,
@@ -109,6 +118,7 @@ app.get("/new", async (req, res) => {
 
 // order content by newest 
 app.get("/ordernew", async (req, res) => {
+  const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
     gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id DESC;",[loggeduser])).rows
   }else{
@@ -122,6 +132,7 @@ app.get("/ordernew", async (req, res) => {
 
 // order content by oldest 
 app.get("/orderold", async (req, res) => {
+  const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
     gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id ASC;",[loggeduser])).rows
   }else{
@@ -135,6 +146,7 @@ app.get("/orderold", async (req, res) => {
 
 // order content by highest rated 
 app.get("/orderbest", async (req, res) => {
+  const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
     gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating DESC;",[loggeduser])).rows
   }else{
@@ -148,6 +160,7 @@ app.get("/orderbest", async (req, res) => {
 
 // order content by lowest rated 
 app.get("/orderworst", async (req, res) => {
+  const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
     gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating ASC;",[loggeduser])).rows
   }else{
@@ -162,6 +175,7 @@ app.get("/orderworst", async (req, res) => {
 // search content for an entry
 app.post("/search", async (req, res) => {
   const {search} = req.body;
+  const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
     gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 AND LOWER(gd.name) LIKE LOWER($2) ORDER BY gd.id DESC;",[loggeduser,"%"+search+"%"])).rows
   }else{
@@ -189,8 +203,8 @@ app.post("/login", async (req, res) => {
       get_user[0].password,
       async function (err, result) { // result can be true or false based on matching password with the one from the database
         if (result) { // true, password matched
-          // login user
-          loggeduser = get_user[0].email; 
+          // Set the user in the session
+          req.session.loggeduser = username;
           // get user gamelist
           gamelist = (
             await db.query("SELECT * FROM gamedata WHERE user_uid = $1;", [
@@ -199,13 +213,13 @@ app.post("/login", async (req, res) => {
           ).rows;
           // render homepage with logged in user details
           res.render("index.ejs", {
-            loggeduser: loggeduser,
+            loggeduser: username,
             gamelist: gamelist,
           });
         } else { // result was false, password didn't match
           wrongCredentials="wrongpass";
           res.render("login.ejs", {
-            loggeduser: loggeduser,
+            loggeduser: "",
             signupon: signupon,
             wrongCredentials: wrongCredentials
           });
@@ -215,7 +229,7 @@ app.post("/login", async (req, res) => {
   } else { // user doesn't exist, render login screen again
     wrongCredentials="wrongpass";
     res.render("login.ejs", {
-      loggeduser: loggeduser,
+      loggeduser: "",
       signupon: signupon,
       wrongCredentials: wrongCredentials
     });
@@ -230,7 +244,7 @@ app.post("/signup", async (req, res) => {
     wrongCredentials="missmatchpass";
     // if they don't, render signup screen again
     res.render("login.ejs", {
-      loggeduser: loggeduser,
+      loggeduser: "",
       signupon: signupon,
       wrongCredentials: wrongCredentials
     });
@@ -245,7 +259,7 @@ app.post("/signup", async (req, res) => {
       wrongCredentials="userexist";
       // render signup screen again
       res.render("login.ejs", {
-        loggeduser: loggeduser,
+        loggeduser: "",
         signupon: signupon,
         wrongCredentials: wrongCredentials
       });
@@ -258,11 +272,11 @@ app.post("/signup", async (req, res) => {
             "INSERT INTO usercredentials (email, password) VALUES ($1, $2)",
             [username, hash]
           );
-          // set logged user to registered user value to instantly log them in and render homescreen
-          loggeduser = username;
+          // Set the user in the session to instantly log them in and render homescreen
+          req.session.loggeduser = username;
           const get_registered_user = (
             await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
-              loggeduser,
+              username,
             ])
           ).rows;
           // set the gamelist to the registered users gamelist, should be empty array as no data should exist
@@ -273,7 +287,7 @@ app.post("/signup", async (req, res) => {
           ).rows;
           // render homepage with the new user already registered
           res.render("index.ejs", {
-            loggeduser: loggeduser,
+            loggeduser: username,
             gamelist: gamelist,
           });
         } catch (error) {
@@ -288,6 +302,7 @@ app.post("/signup", async (req, res) => {
 app.post("/new", async (req, res) => {
   const { name, platform, achievements, rating, imgurl, imgpopurl, review } =
     req.body;
+  const loggeduser = req.session.loggeduser || "";
     //get the logged in user data to have his id for later query
   const get_user = (
     await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
@@ -328,6 +343,7 @@ app.post("/new", async (req, res) => {
 // load in the edit form with existing data from the games
 app.post("/edit", async (req, res) => {
   const itemid = req.body.id;
+  const loggeduser = req.session.loggeduser;
   // use the id passed through by the form to get the data for the item
   const get_item = (
     await db.query("SELECT * FROM gamedata WHERE id = $1;", [itemid])
@@ -364,6 +380,7 @@ app.post("/editsave", async (req, res) => {
     id,
     user_uid,
   } = req.body;
+  const loggeduser = req.session.loggeduser;
   try {
     // update the existing entry
     const result = await db.query(
