@@ -19,9 +19,14 @@ h1 {
 
 .add-icon {
   text-align: center;
-  padding-right: 20px; /* Adjust this value to set the distance from the right side */
-  padding-left: 20px; /* Adjust this value to set the distance from the left side */
+  padding-right: 5px; /* Adjust this value to set the distance from the right side */
+  padding-left: 5px; /* Adjust this value to set the distance from the left side */
   padding-top: 10px;
+}
+
+.order-items-padding{
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .add-card {
@@ -178,6 +183,7 @@ body {
   overflow: hidden;
   grid-column: 5 / 10;
   margin-left: 3.2rem;
+  margin-top: 1.5rem;
 }
 
 /* Media query for smaller screens */

@@ -2,8 +2,8 @@
 
     <div class="d-flex justify-content-center py-3">
         <ul class="nav align-items-center nav-pills">
-            <li class="nav-item"><a href="/ordernew" style="color:#212529;" class="nav-link">Order by newest</a></li>
-            <li class="nav-item"><a href="/orderold" style="color:#212529;" class="nav-link">Order by oldest</a></li>
+            <li class="nav-item"><a href="/ordernew" style="color:#212529;" class="nav-link order-items-padding">Newest</a></li>
+            <li class="nav-item"><a href="/orderold" style="color:#212529;" class="nav-link order-items-padding">Oldest</a></li>
             <li>
                 <% if(loggeduser!="" ){%>
                     <h1 class="add-icon">
@@ -17,9 +17,9 @@
                     </h1>
                 <% } %>
             </li>
-            <li class="nav-item"><a href="/orderbest" style="color:#212529;" class="nav-link">Order by highest rated</a>
+            <li class="nav-item"><a href="/orderbest" style="color:#212529;" class="nav-link order-items-padding">Highest</a>
             </li>
-            <li class="nav-item"><a href="/orderworst" style="color:#212529;" class="nav-link">Order by lowest rated</a>
+            <li class="nav-item"><a href="/orderworst" style="color:#212529;" class="nav-link order-items-padding">Lowest</a>
             </li>
         </ul>
     </div>
