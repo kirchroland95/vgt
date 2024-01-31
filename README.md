@@ -22,11 +22,13 @@ The website was designed for desktop usage. There is a second layout for the con
 - Node.js
 - Node packages:
   - Express
+  - Express-session
   - Body-parser
   - EJS
   - dotenv
   - Bcrypt
   - pg (node-postgres)
+  - serve-favicon
 
 ## Database Structure
 CREATE TABLE UserCredentials (
@@ -47,8 +49,17 @@ imgpopurl VARCHAR(255) NOT NULL,
 user_uid INT REFERENCES UserCredentials(uid) ON DELETE CASCADE
 );
 
+## Environment variables:
+- POSTGRESUSER
+- POSTGRESHOST
+- POSTGRESDB
+- POSTGRESPASSWD
+- POSTGRESPORT
+- SESSION_SECRET
+- PORT
+
 ## Links
-[GameTracker](https://www.google.com)
+[GameTracker](https://gametracker-6enp.onrender.com)
 [3D card hover](https://codepen.io/gayane-gasparyan/pen/wvxewXO)
 
 

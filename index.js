@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
 import session from 'express-session';
+import favicon from 'serve-favicon'
 // start express app
 const app = express();
 // declare port to use by express
@@ -41,6 +42,8 @@ const saltRounds = 10;
 let gamelist = [];
 // used for error handling on login and sign up
 let wrongCredentials = "no error";
+
+app.use(favicon('./favicon.ico')); 
 
 // render homepage
 app.get("/", async (req, res) => {
