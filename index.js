@@ -7,8 +7,6 @@ import session from 'express-session';
 import favicon from 'serve-favicon'
 // start express app
 const app = express();
-// declare port to use by express
-const port = 3000;
 
 // create database connection using .env values and connect to it
 const db = new pg.Client({
@@ -18,7 +16,14 @@ const db = new pg.Client({
   password: process.env.POSTGRESPASSWD,
   port: process.env.POSTGRESPORT,
 });
-db.connect();
+
+db.connect((err) => {
+  if (err) {
+    console.error('Connection error', err.stack);
+  } else {
+    //console.log('Connected to the database');
+  }
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -55,7 +60,7 @@ app.get("/", async (req, res) => {
   } else {
     // if the user is logged in, search for his entry 
     const getuserID = (
-      await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+      await db.query("SELECT * FROM usercredentials WHERE username = $1;", [
         loggeduser,
       ])
     ).rows;
@@ -123,7 +128,7 @@ app.get("/new", async (req, res) => {
 app.get("/ordernew", async (req, res) => {
   const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
-    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id DESC;",[loggeduser])).rows
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.username = $1 ORDER BY gd.id DESC;",[loggeduser])).rows
   }else{
     gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY id DESC;")).rows
   }
@@ -137,7 +142,7 @@ app.get("/ordernew", async (req, res) => {
 app.get("/orderold", async (req, res) => {
   const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
-    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.id ASC;",[loggeduser])).rows
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.username = $1 ORDER BY gd.id ASC;",[loggeduser])).rows
   }else{
     gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY id ASC;")).rows
   }
@@ -151,7 +156,7 @@ app.get("/orderold", async (req, res) => {
 app.get("/orderbest", async (req, res) => {
   const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
-    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating DESC;",[loggeduser])).rows
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.username = $1 ORDER BY gd.rating DESC;",[loggeduser])).rows
   }else{
     gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY rating DESC;")).rows
   }
@@ -165,7 +170,7 @@ app.get("/orderbest", async (req, res) => {
 app.get("/orderworst", async (req, res) => {
   const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
-    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 ORDER BY gd.rating ASC;",[loggeduser])).rows
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.username = $1 ORDER BY gd.rating ASC;",[loggeduser])).rows
   }else{
     gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 ORDER BY rating ASC;")).rows
   }
@@ -180,7 +185,7 @@ app.post("/search", async (req, res) => {
   const {search} = req.body;
   const loggeduser = req.session.loggeduser || "";
   if (loggeduser != "") {
-    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.email = $1 AND LOWER(gd.name) LIKE LOWER($2) ORDER BY gd.id DESC;",[loggeduser,"%"+search+"%"])).rows
+    gamelist = (await db.query("SELECT gd.* FROM GameData gd JOIN UserCredentials uc ON gd.user_uid = uc.uid WHERE uc.username = $1 AND LOWER(gd.name) LIKE LOWER($2) ORDER BY gd.id DESC;",[loggeduser,"%"+search+"%"])).rows
   }else{
     gamelist = (await db.query("SELECT * FROM GameData WHERE user_uid = 1 AND LOWER(name) LIKE LOWER($1) ORDER BY rating DESC;",["%"+search+"%"])).rows
   }
@@ -195,7 +200,7 @@ app.post("/login", async (req, res) => {
   // get user and password from form and get password from database
   const { username, password } = req.body;
   const get_user = (
-    await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+    await db.query("SELECT * FROM usercredentials WHERE username = $1;", [
       username,
     ])
   ).rows;
@@ -241,7 +246,7 @@ app.post("/login", async (req, res) => {
 
 // sign up a new user
 app.post("/signup", async (req, res) => {
-  const { username, password, confirmpassword } = req.body;
+  const { username, password, confirmpassword, email } = req.body;
   // check if the 2 passwords match
   if (password != confirmpassword) {
     wrongCredentials="missmatchpass";
@@ -254,7 +259,7 @@ app.post("/signup", async (req, res) => {
   } else {
     // if passwords are the same, check if user exists in the database
     const get_user = (
-      await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+      await db.query("SELECT * FROM usercredentials WHERE username = $1;", [
         username,
       ])
     ).rows;
@@ -266,19 +271,34 @@ app.post("/signup", async (req, res) => {
         signupon: signupon,
         wrongCredentials: wrongCredentials
       });
-    } else { // user does not exist and passwords match, add new user
+    } else { 
+      const get_email = (
+        await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+          email,
+        ])
+      ).rows;
+      if (get_email.length > 0) { // if user already exists
+        wrongCredentials="userexist";
+        // render signup screen again
+        res.render("login.ejs", {
+          loggeduser: "",
+          signupon: signupon,
+          wrongCredentials: wrongCredentials
+        });
+      } else{      
+      // user does not exist and passwords match, add new user
       // encrypt password with bcrypt
       bcrypt.hash(password, saltRounds, async function (err, hash) {
         try {
           // insert new user and hashed password into the database
           const result = await db.query(
-            "INSERT INTO usercredentials (email, password) VALUES ($1, $2)",
-            [username, hash]
+            "INSERT INTO usercredentials (email, password, username) VALUES ($1, $2, $3)",
+            [email, hash, username]
           );
           // Set the user in the session to instantly log them in and render homescreen
           req.session.loggeduser = username;
           const get_registered_user = (
-            await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+            await db.query("SELECT * FROM usercredentials WHERE username = $1;", [
               username,
             ])
           ).rows;
@@ -299,6 +319,7 @@ app.post("/signup", async (req, res) => {
       });
     }
   }
+  }
 });
 
 // add a new game to the list
@@ -308,7 +329,7 @@ app.post("/new", async (req, res) => {
   const loggeduser = req.session.loggeduser || "";
     //get the logged in user data to have his id for later query
   const get_user = (
-    await db.query("SELECT * FROM usercredentials WHERE email = $1;", [
+    await db.query("SELECT * FROM usercredentials WHERE username = $1;", [
       loggeduser,
     ])
   ).rows;
